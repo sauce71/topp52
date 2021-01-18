@@ -1,8 +1,32 @@
 -- Initialize the database.
 -- Drop any existing data and create empty tables.
 
+DROP TABLE IF EXISTS tours;
+DROP TABLE IF EXISTS users;
+
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS post;
+
+
+CREATE TABLE users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  username TEXT UNIQUE NOT NULL,
+  email TEXT UNIQUE NOT NULL,
+  password TEXT NOT NULL,
+  admin BOOLEAN NOT NULL DEFAULT 0,
+  visible BOOLEAN NOT NULL DEFAULT 1
+);
+
+
+CREATE TABLE tours (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    tour_date DATE NOT NULL,
+    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
 
 CREATE TABLE user (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -18,3 +42,5 @@ CREATE TABLE post (
   body TEXT NOT NULL,
   FOREIGN KEY (author_id) REFERENCES user (id)
 );
+
+ 
