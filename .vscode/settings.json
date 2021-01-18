@@ -17,5 +17,5 @@
             "priority": 4
         }
     ],
-    "python.pythonPath": "env/bin/python"
+    "python.pythonPath": "env\\Scripts\\python.exe"
 }
