@@ -67,7 +67,7 @@ def populate_db():
     db.execute('DELETE FROM tours')
     for i in range(100):
         user_id = choice(userlist)
-        td = timedelta(days=randint(0, 365))
+        td = timedelta(days=randint(0, 60))
         tour_date = date.today() - td
         # Se video om SQL injection
         db.execute("INSERT INTO tours (user_id, tour_date) VALUES (?, ?)", (user_id, tour_date,))
