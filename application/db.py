@@ -39,12 +39,17 @@ def init_db():
         db.executescript(f.read().decode("utf8"))
 
 
-def user_tours(user_id, date_from, date_to):
+def get_user(user_id):
+    q = "select * from users where id = ?"
+    db = get_db()
+    return db.execute(q, (user_id,)).fetchone()
+
+def get_user_tours(user_id, date_from, date_to):
     q = """
     select id, tour_date
     from tours
     WHERE
-    user_id = 6
+    user_id = 2
     AND
     tour_date >= '2021-01-01'
     AND
@@ -52,27 +57,29 @@ def user_tours(user_id, date_from, date_to):
     order by tour_date
     """
     db = get_db()
-    db.execute(q)
-    return db.fetchall()
+    return db.execute(q).fetchall()
+    
 
-def user_tours_count(year):
+def get_user_tours_count(user_id, year):
     q = """
     select count(*) count_tours
     FROM
     tours
     WHERE
-    user_id = 6
+    user_id = ?
     AND
-    tour_date >= '2021-01-01'
+    tour_date >= ?
     AND
-    tour_date <= '2021-12-31'
+    tour_date <= ?
     """
+    df = date(year, 1, 1)
+    dt = date(year, 12, 31)
     db = get_db()
-    db.execute(q)
-    return db.fetchall()
+    return db.execute(q, (user_id, df, dt)).fetchone()
+    fetchone()
 
 
-def users_top(date_from, date_to):
+def get_users_top(date_from, date_to):
     q = """
     select t.user_id, u.username, count(*) count_tours
     from tours t
@@ -87,7 +94,7 @@ def users_top(date_from, date_to):
     db.execute(q)
     return db.fetchall()
 
-def tours_latest():
+def get_tours_latest():
     q = """
     select t.*, u.username 
     from tours t
@@ -101,7 +108,7 @@ def tours_latest():
     db.execute(q)
     return db.fetchall()
 
-def tours_count(year):
+def get_tours_count(year):
     q = """
     select count(*) count_tours
     FROM

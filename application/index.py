@@ -10,7 +10,7 @@ from werkzeug.exceptions import abort
 from application.auth import login_required
 from application.db import get_db
 
-bp = Blueprint("blog", __name__)
+bp = Blueprint("index", __name__)
 
 
 @bp.route("/")
