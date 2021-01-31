@@ -1,3 +1,4 @@
+from datetime import date
 from flask import Blueprint
 from flask import flash
 from flask import g
@@ -13,16 +14,18 @@ from application.db import get_db
 bp = Blueprint("index", __name__)
 
 
-@bp.route("/")
+@bp.route("/", methods=("GET", "POST"))
 def index():
-    """Show all the posts, most recent first."""
-    db = get_db()
-    posts = db.execute(
-        "SELECT p.id, title, body, created, author_id, username"
-        " FROM post p JOIN user u ON p.author_id = u.id"
-        " ORDER BY created DESC"
-    ).fetchall()
-    return render_template("blog/index.html", posts=posts)
+    if request.method == "POST":
+        tour_date = request.form["tour_date"] # Henter ut verdien
+        flash('Tur registrert!')
+        print(tour_date)
+        # TODO: Så må en lagre dette i tabellen, med innlogget bruker
+        # TODO: Mulig ta en til egen side når en har registrert turen?
+
+    # TODO: Må vise antall turer i år mm. 
+
+    return render_template("index.html", today=date.today())
 
 
 def get_post(id, check_author=True):

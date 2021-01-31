@@ -76,23 +76,23 @@ def get_user_tours_count(user_id, year):
     dt = date(year, 12, 31)
     db = get_db()
     return db.execute(q, (user_id, df, dt)).fetchone()
-    fetchone()
 
 
-def get_users_top(date_from, date_to):
+def get_top_users(date_from, date_to):
     q = """
     select t.user_id, u.username, count(*) count_tours
     from tours t
     join users u on u.id = t.user_id
     WHERE
-    t.tour_date >= '2021-01-01' and t.tour_date <= '2021-12-31'
+    t.tour_date >= ? and t.tour_date <= ?
     group by t.user_id
     order by count(*) DESC
     limit 50
     """
+    # TODO: Filtrer ut bare de som har gitt tillatelse til å vises i listen
+    # TODO: Må legge til initial tours om det er hele året
     db = get_db()
-    db.execute(q)
-    return db.fetchall()
+    return db.execute(q, (date_from, date_to,)).fetchall()
 
 def get_tours_latest():
     q = """

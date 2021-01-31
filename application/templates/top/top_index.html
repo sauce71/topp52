@@ -1,0 +1,43 @@
+{% extends 'base.html' %} 
+{% block header %}
+<h1>Toppliste</h1>
+{# https://getbootstrap.com/docs/4.0/components/navs/ #}
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active" href="#">År</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Måned</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Uke</a>
+    </li>
+  </ul>
+{% endblock %}
+
+{% block content %}
+{# https://getbootstrap.com/docs/4.0/content/tables/ #}
+
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Navn</th>
+        <th scope="col">Antall</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for u in top_users %}
+      <tr>
+        <th scope="row">{{ loop.index }}</th>
+        <td>{{ u['username'] }}</td>
+        <td>{{ u['count_tours'] }} </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+      </table>
+
+
+
+
+{% endblock %}

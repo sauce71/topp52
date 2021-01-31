@@ -13,10 +13,14 @@ from application.db import get_db, get_user, get_user_tours_count, get_user_tour
 
 bp = Blueprint("user", __name__)
 
+@bp.route("/user/")
 @bp.route("/user/<int:user_id>")
-def user_index(user_id):
+#@login_required # Siden skal bare være tilgjengelig for inlogget bruker, i test så kan en se forskjellige
+def user_index(user_id=-1):
+    #user_id = g.user["id"] # Dette er innlogget bruker
     user = get_user(user_id)
     tour_count = get_user_tours_count(user_id,date.today().year)['count_tours']
+    # TODO: Legg også til initial_tours hvis brukeren er opprettet i år.
   
     return render_template('user/user_index.html', user=user, tour_count=tour_count)
 

@@ -9,13 +9,18 @@ from werkzeug.exceptions import abort
 from datetime import date
 
 from application.auth import login_required
-from application.db import get_db, get_user, get_user_tours_count, get_user_tours
+from application.db import get_db, get_top_users
 
 bp = Blueprint("top", __name__)
 
 @bp.route("/top")
-def user_index(user_id):
-    user = get_user(user_id)
-    tour_count = get_user_tours_count(user_id,date.today().year)['count_tours']
-  
-    return render_template('user/user_index.html', user=user, tour_count=tour_count)
+@bp.route("/top/<interval>")
+
+def top_index(interval='year'):
+    if interval == 'year':
+        date_from = date.today().replace(day=1, month=1)
+        date_to = date.today()
+    # TODO: Fortsett for måned og uke    
+    top_users = get_top_users(date_from, date_to)
+
+    return render_template('top/top_index.html', top_users=top_users, interval=interval)
