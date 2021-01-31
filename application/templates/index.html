@@ -10,14 +10,18 @@
 <a href="{{ url_for('top.top_index') }}">Toppliste</a><br> 
 <br>
 {# TODO: Sjekk formatering av former https://getbootstrap.com/docs/4.0/components/forms/  #}
+
 <form method="post">
     <label for="tour_date">Dato</label>
     <input type="date" id="tour_date" name="tour_date"
        value="{{ today }}"
        min="2021-01-01" max="{{ today }}">
-       <input type="submit" value="Lagre">
+       <input type="submit" value="Registrer tur">
 
   </form>
+
+  {# TODO: Registrering skal bare vises om brukeren er logget inn #}
+  {# Er en ikke logget inn så skal det være knapp for å registrere seg eller logge inn #}
 
 
 
