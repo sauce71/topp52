@@ -6,6 +6,7 @@ from flask import g
 from flask.cli import with_appcontext
 from random import choice, randint
 from datetime import date, timedelta
+from werkzeug.security import generate_password_hash
 
 
 def get_db():
@@ -134,16 +135,18 @@ def init_db_command():
 
 def populate_db():
     db = get_db()
-    insert_users = """
+    password = generate_password_hash('Admin:1234')
+    insert_users = f"""
     DELETE FROM users;
-    INSERT INTO users (username, email, password) VALUES ('Vetle', 'vetle@vealos.no', '');
-    INSERT INTO users (username, email, password) VALUES ('Mikael', 'mikael@vealos.no', '');
-    INSERT INTO users (username, email, password) VALUES ('Andreas', 'andreas@vealos.no', '');
-    INSERT INTO users (username, email, password) VALUES ('Noah', 'noah@vealos.no', '');
-    INSERT INTO users (username, email, password) VALUES ('Tobias', 'tobias@vealos.no', '');
-    INSERT INTO users (username, email, password) VALUES ('August', 'august@vealos.no', '');
-    INSERT INTO users (username, email, password) VALUES ('Tom', 'tom@vealos.no', '');    
+    INSERT INTO users (username, email, password) VALUES ('Vetle', 'vetle@vealos.no', '{password}');
+    INSERT INTO users (username, email, password) VALUES ('Mikael', 'mikael@vealos.no', '{password}');
+    INSERT INTO users (username, email, password) VALUES ('Andreas', 'andreas@vealos.no', '{password}');
+    INSERT INTO users (username, email, password) VALUES ('Noah', 'noah@vealos.no', '{password}');
+    INSERT INTO users (username, email, password) VALUES ('Tobias', 'tobias@vealos.no', '{password}');
+    INSERT INTO users (username, email, password) VALUES ('August', 'august@vealos.no', '{password}');
+    INSERT INTO users (username, email, password) VALUES ('Tom', 'tom@vealos.no', '{password}');    
     """
+    print(insert_users)
     db.executescript(insert_users)
     users = db.execute('SELECT id FROM users').fetchall()
     userlist = []
@@ -165,7 +168,7 @@ def populate_db():
 @click.command("populate-db")
 @with_appcontext
 def populate_db_command():
-    """Clear existing data and fill with new data."""
+    """Populate with random data."""
     populate_db()
     click.echo("Created dummy data.")
 
