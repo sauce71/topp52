@@ -29,7 +29,7 @@
     <tbody>
     {% for u in top_users %}
       <tr>
-        <th scope="row">{{ loop.index }}</th>
+        <th class="table-light"  scope="row">{{ loop.index }}</th>
         <td>{{ u['username'] }}</td>
         <td>{{ u['count_tours'] }} </td>
       </tr>
