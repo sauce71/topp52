@@ -2,12 +2,12 @@
 {% block header %}
 <h1>{% block title %}Posts{% endblock %}</h1>
 {% if g.user %}
-<a class="action" href="{{ url_for('blog.create') }}">New</a> 
 {% endif %} 
 {% endblock %} 
 {% block content %}
-<a href="{{ url_for('user.user_index', user_id=2) }}">Brukeside</a><br>
-<a href="{{ url_for('top.top_index') }}">Toppliste</a><br> 
+<a class="btn btn-outline-info" class="action" href="{{ url_for('index.create') }}">New</a> 
+<a class="btn btn-outline-info" href="{{ url_for('user.user_index', user_id=2) }}">Brukeside</a>
+<a class="btn btn-outline-info" href="{{ url_for('top.top_index') }}">Toppliste</a>
 <br>
 {# TODO: Sjekk formatering av former https://getbootstrap.com/docs/4.0/components/forms/  #}
 
@@ -16,7 +16,7 @@
     <input type="date" id="tour_date" name="tour_date"
        value="{{ today }}"
        min="2021-01-01" max="{{ today }}">
-       <input type="submit" value="Registrer tur">
+       <input type="submit" class="btn btn-outline-primary" value="Registrer tur">
 
   </form>
 

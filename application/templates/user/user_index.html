@@ -9,7 +9,7 @@
 
 {% block content %}
 Turer i år {{ tour_count }} / 52<br> 
-<a href="{{ url_for('user.user_tours', user_id=user['id'], year=2021) }}">Alle turer</a>
+<a class="btn btn-outline-info" href="{{ url_for('user.user_tours', user_id=user['id'], year=2021) }}">Alle turer</a>
 
 
 {% endblock %}
