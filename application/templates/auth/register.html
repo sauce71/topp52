@@ -6,10 +6,20 @@
 
 {% block content %}
   <form method="post">
-    <label for="username">Username</label>
+    <label for="username">Brukernavn</label>
     <input class="form-control" name="username" id="username" required>
-    <label for="password">Password</label>
+    <label for="email">E-Post</label>
+    <input class="form-control" name="email" id="email" required>
+    <label for="password">Passord</label>
     <input class="form-control" type="password" name="password" id="password" required>
+    <label for="password_verify">Verifiser Passord</label>
+    <input class="form-control" type="password" name="password_verify" id="password_verify" required>
+    <label for="init_tours" style="padding-right: 10px;">Hvor mange turer har du gått fra før?</label>
+    <input type="text" class="form-control" aria-describedby="addon-wrapping" placeholder="0" name="init_tours" id="init_tours">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="True" name="visible" id="visible">
+      <label class="form-check-label" for="visible">Vis navnet mitt på topplistene</label>
+    </div>
     <input type="submit" class="btn btn-outline-primary" value="Register">
   </form>
 {% endblock %}
