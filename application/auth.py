@@ -1,4 +1,5 @@
 import functools
+import re 
 
 from flask import Blueprint
 from flask import flash
@@ -14,7 +15,13 @@ from werkzeug.security import generate_password_hash
 from application.db import get_db
 
 bp = Blueprint("auth", __name__, url_prefix="/auth")
+regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
 
+def check(email):  
+    if(re.search(regex,email)):  
+        return True 
+    else:  
+        return False
 
 def login_required(view):
     """View decorator that redirects anonymous users to the login page."""
@@ -51,27 +58,46 @@ def register():
     password for security.
     """
     if request.method == "POST":
+        email = request.form["email"]
         username = request.form["username"]
         password = request.form["password"]
+        password_verify = request.form["password_verify"]
+        init_tours = request.form["init_tours"]
+        if init_tours == "":
+            init_tours = 0
         db = get_db()
         error = None
-
+        
+        if "visible" in request.form:
+            visible = 1
+        else:
+            visible = 0
         if not username:
-            error = "Username is required."
+            error = "Skriv inn et brukernavn."
         elif not password:
-            error = "Password is required."
+            error = "Skriv inn et passord."
+        elif not email:
+            error = "Skriv inn en E-Post adresse."
+        elif password != password_verify:
+            error = "Passordene er ikke like."
+        elif not check(email):
+            error = "Ugyldig E-Post adresse."
         elif (
-            db.execute("SELECT id FROM users WHERE username = ?", (username,)).fetchone()
+            db.execute("SELECT id FROM users WHERE email = ?", (email,)).fetchone()
             is not None
         ):
-            error = "User {0} is already registered.".format(username)
+            error = "E-Posten '{0}' er i bruk.".format(email)
 
+        try:
+            int(init_tours)
+        except:
+            error = "'{}' er ikke et gyldig antall turer".format(init_tours)
         if error is None:
             # the name is available, store it in the database and go to
             # the login page
             db.execute(
-                "INSERT INTO users (username, password) VALUES (?, ?)",
-                (username, generate_password_hash(password)),
+                "INSERT INTO users (username, password, email, visible, initial_tours) VALUES (?, ?, ?, ?, ?)",
+                (username, generate_password_hash(password), email, visible, int(init_tours)),
             )
             db.commit()
             return redirect(url_for("auth.login"))
